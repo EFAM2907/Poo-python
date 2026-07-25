@@ -16,14 +16,15 @@ class CuentaBancaria():
         """)
     
 class CuentaAhorros(CuentaBancaria):
-    pass
+    def __init__(self, numero_de_cuenta, titular, saldo,tasa_interes):
+        self.tasa_interes = tasa_interes
         
         
 cuenta = CuentaAhorros(
     12345,
     "Edwin",
     5000,
-    
+    0.08
 )
 
-print(cuenta.consultar_saldo())
+print(cuenta.tasa_interes)
