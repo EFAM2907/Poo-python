@@ -1,6 +1,7 @@
-from cliente import Cliente
-from cuenta_ahorros import CuentaAhorros
-from cuenta_corriente import CuentaCorriente
+from modelos.cliente import Cliente
+from modelos.cuenta_ahorros import CuentaAhorros
+from modelos.cuenta_corriente import CuentaCorriente
+
 
 class Banco:
     def __init__(self, nombre):
@@ -8,14 +9,32 @@ class Banco:
         self.clientes = []
         self.cuentas = []
         
-    def agregar_cliente(self, cliente):
-        if not isinstance(cliente, Cliente):
-            return 'Debe ser un cliente'
-        for usuario in self.clientes:
-            if usuario.id_cliente == cliente.id_cliente:
-                return 'El usuario ya existe'
-        self.clientes.append(cliente)
-        return'Se agrego el cliente correctamente'
+    def generador_id(lista):
+        if not lista:
+            return 1
+    
+        return max(lista, key= lambda elemento : elemento['id'])['id']+1
+
+        
+    def crear_cliente(self, nombre,telefono,correo):
+        for cliente in self.clientes:
+          if cliente.telefono == telefono:
+             raise ValueError('Telefono ya existente')
+          if cliente.correo == correo:
+             raise ValueError('El correo ya esta registrado')
+        nuevo_id = self.generador_id(self.clientes)
+        nuevo_cliente = Cliente(nuevo_id, nombre, telefono,correo)
+        self.clientes.append(nuevo_cliente)
+        return nuevo_cliente
+        
+    # def agregar_cliente(self, cliente):
+    #     if not isinstance(cliente, Cliente):
+    #         return 'Debe ser un cliente'
+    #     for usuario in self.clientes:
+    #         if usuario.id_cliente == cliente.id_cliente:
+    #             return 'El usuario ya existe'
+    #     self.clientes.append(cliente)
+    #     return'Se agrego el cliente correctamente'
     
     def buscar_cliente(self, id_cliente):
         if not isinstance(id_cliente, int):
@@ -67,7 +86,7 @@ class Banco:
 
     def transferir(self, monto, cuenta_origen, cuenta_destino):
          if monto <= 0:
-             return 'Error, el monto debe ser positivo'
+             raise ValueError('Error, el monto debe ser positivo')
          
          origen = self.buscar_cuenta(cuenta_origen)
          destino = self.buscar_cuenta(cuenta_destino)
@@ -80,26 +99,26 @@ class Banco:
              return 'Error, no puedes transferir a la misma cuenta'
 
          
-         if not origen.retirar(monto):
-            return 'Error, no se pudo retirar (saldo insuficiente)'
+        #  if not origen.retirar(monto):
+        #     return 'Error, no se pudo retirar (saldo insuficiente)'
 
          destino.depositar(monto)
          return 'Transferencia exitosa'
     
 banco_cuenta = Banco('Bancolombia')
-cliente1 = Cliente(1, 'Edwin', 3023037807, 'efam@gmail.com')
-cliente2 = Cliente(2, 'fernando', 3083037807, 'fer@gmail.com')
+# cliente1 = Cliente(1, 'Edwin', 3023037807, 'efam@gmail.com')
+# cliente2 = Cliente(2, 'fernando', 3083037807, 'fer@gmail.com')
 
 
-banco_cuenta.agregar_cliente(cliente1)
-banco_cuenta.agregar_cliente(cliente2)
+# banco_cuenta.agregar_cliente(cliente1)
+# banco_cuenta.agregar_cliente(cliente2)
 
-banco_cuenta.crear_cuenta_ahorros(1, 65108457869, 20_000)
-banco_cuenta.crear_cuenta_ahorros(2, 3510761852, 50_000)
+# banco_cuenta.crear_cuenta_ahorros(1, 65108457869, 20_000)
+# banco_cuenta.crear_cuenta_ahorros(2, 3510761852, 50_000)
 
-print(banco_cuenta.cuentas)
-print(banco_cuenta.transferir(5000, 65108457869, 3510761852))  # Edwin -> Fernando, debería ser exitosa
-print(banco_cuenta.transferir(5000, 999999999, 6510761852))    # origen falso, debería avisar
-print(banco_cuenta.transferir(5000, 65108457869, 999999999))   # destino falso, debería avisar
+# print(banco_cuenta.cuentas)
+# print(banco_cuenta.transferir(5000, 65108457869, 3510761852))  # Edwin -> Fernando, debería ser exitosa
+# print(banco_cuenta.transferir(5000, 999999999, 6510761852))    # origen falso, debería avisar
+# print(banco_cuenta.transferir(5000, 65108457869, 999999999))   # destino falso, debería avisar
 
-print(banco_cuenta.cuentas)
+# print(banco_cuenta.cuentas)

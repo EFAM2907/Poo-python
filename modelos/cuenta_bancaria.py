@@ -22,10 +22,10 @@ class CuentaBancaria:
         
     def depositar(self, monto):
         if not isinstance(monto, (int, float)):
-            return False
+            raise ValueError('Deben ser numeros')
 
         if monto <= 0:
-            return False
+            raise ValueError('El valor no puede ser negativo')
 
         self._saldo += monto
         return True
@@ -51,13 +51,13 @@ class CuentaBancaria:
     
     def retirar(self, monto):
         if not isinstance(monto, (int, float)):
-            return False
+            raise ValueError('Deben ser numeros')
 
         if monto <= 0:
-            return False
+            raise ValueError('el monto no debe ser negativo')
 
         if monto > self._saldo:
-            return False
+            return ValueError('Fondos insuficientes')
 
         self._saldo -= monto
         return True
