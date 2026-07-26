@@ -1,4 +1,4 @@
-from cuenta_bancaria import CuentaBancaria
+from .cuenta_bancaria import CuentaBancaria
 from datetime import datetime
 
 

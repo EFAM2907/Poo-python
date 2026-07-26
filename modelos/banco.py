@@ -9,11 +9,11 @@ class Banco:
         self.clientes = []
         self.cuentas = []
         
-    def generador_id(lista):
+    def generador_id(self, lista):
         if not lista:
             return 1
     
-        return max(lista, key= lambda elemento : elemento['id'])['id']+1
+        return max(lista, key= lambda elemento : elemento.id_cliente).id_cliente + 1
 
         
     def crear_cliente(self, nombre,telefono,correo):
@@ -63,24 +63,21 @@ class Banco:
         self.clientes.remove(cliente)
         return 'Cliente eliminado Correctamente'
     
-    def crear_cuenta_ahorros(self, id_cliente, numero_de_cuenta, saldo_inicial):
+    def crear_cuenta(self, tipo_de_cuenta, id_cliente, numero_de_cuenta, saldo_inicial):
         cliente = self.buscar_cliente(id_cliente)
         if cliente is None:
-            return 'Error, cliente no encontrado'
-        cuenta = CuentaAhorros(numero_de_cuenta, cliente,saldo_inicial)
+            raise ValueError('Error, cliente no encontrado')
+        cuenta = tipo_de_cuenta(numero_de_cuenta, cliente,saldo_inicial)
         cliente.agregar_cuenta(cuenta)
         self.cuentas.append(cuenta)
 
         return cuenta
     
-    def crear_cuenta_corriente(self, id_cliente, numero_de_cuenta, saldo_inicial):
-        cliente = self.buscar_cliente(id_cliente)
-        if cliente is None:
-            return 'Error, cliente no encontrado'
-        cuenta = CuentaCorriente(numero_de_cuenta, cliente,saldo_inicial)
-        cliente.agregar_cuenta(cuenta)
-        self.cuentas.append(cuenta)
-        return cuenta
+    def crear_cuenta_ahorros(self,id_cliente, numero_de_cuenta, saldo_inicial):
+        return self.crear_cuenta(CuentaAhorros,id_cliente, numero_de_cuenta, saldo_inicial )
+    
+    def crear_cuenta_corriente(self,id_cliente, numero_de_cuenta, saldo_inicial):
+        return self.crear_cuenta(CuentaCorriente,id_cliente, numero_de_cuenta, saldo_inicial )
     
     
 
