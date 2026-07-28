@@ -5,7 +5,7 @@ class CuentaAhorros(CuentaBancaria):
 
     def __init__(self, numero_de_cuenta, cliente, saldo):
         super().__init__(numero_de_cuenta, cliente, saldo)
-        self.tipo_de_cuenta = 'ahorros'
+        self.tipo_de_cuenta = 'Ahorros'
 
     def aplicar_intereses(self, porcentaje):
         interes = self._saldo * (porcentaje / 100)

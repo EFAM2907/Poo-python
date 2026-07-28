@@ -1,3 +1,6 @@
+import re
+
+
 def pedir_float(mensaje):
     while True:
         try:
@@ -19,24 +22,15 @@ def pedir_texto(mensaje):
             return texto
         print('no debe estar vacio')
         
-def pedir_email():
+
+def pedir_email(mensaje='Correo electronico: '):
+    patron = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    
     while True:
-        email = pedir_texto("Correo electronico: ")
-
-        if "@" not in email:
-            print("El correo debe contener un '@'.")
-            continue
-
-        if "." not in email:
-            print("El correo debe contener un punto.")
-            continue
-
-        if email.rindex(".") < email.index("@"):
-            print("El punto debe estar después del '@'.")
-            continue
-
-        return email
-
+        correo = input(mensaje).strip()
+        if re.match(patron, correo):
+            return correo
+        print('Correo invalido, intenta de nuevo')
 
 def pedir_datos_cuenta():
         id_cliente = pedir_numero('ID del cliente: ')
